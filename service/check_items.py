@@ -4,26 +4,27 @@ import subprocess
 import json
 import psutil
 
-system_server = sys.platform
-service = os.popen("cat /etc/services").read()
-dns = os.popen("cat /etc/resolv.conf").read()
-qtd_users = os.popen("getent passwd | wc -l").read()
-ssh = os.popen("systemctl status ssh.service").read()
+def check_system(req):
 
-json_server_items = {
-    "system": system_server.replace('\n', ''),
-    "path_archive_python": (os.getcwd()),
-    "qtd_users": qtd_users.replace('\n', ''),
-    "dns": dns.replace('\n', ''),
-    "ssh_info" : ssh.replace('\n', ''),
-    "cpu" : psutil.cpu_percent(1),
-    "virtual_memory": psutil.virtual_memory(),
-    "users": psutil.users()
-}
+    system_server = sys.platform
+    service = os.popen("cat /etc/services").read()
+    dns = os.popen("cat /etc/resolv.conf").read()
+    qtd_users = os.popen("getent passwd | wc -l").read()
+    ssh = os.popen("systemctl status ssh.service").read()
 
-app_json = json.dumps(json_server_items)
+    json_server_items = {
+        "system": system_server.replace('\n', ''),
+        "path_archive_python": (os.getcwd()),
+        "qtd_users": qtd_users.replace('\n', ''),
+        "dns": dns.replace('\n', ''),
+        "ssh_info" : ssh.replace('\n', ''),
+        "cpu" : psutil.cpu_percent(1),
+        "virtual_memory": psutil.virtual_memory(),
+        "users": psutil.users()
+    }
 
-with open('archives/result.json', 'w') as fp:
-    json.dump(json_server_items, fp)
+    app_json = json.dumps(json_server_items)
 
-print("result.json created in /archives")
+    return app_json, 200
+
+    print("result.json created in /archives")
