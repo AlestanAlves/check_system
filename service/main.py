@@ -2,7 +2,7 @@
 Serviços para gerar o endpoint da aplicação
 """
 
-import check_items
+import service.check_system as check_system
 
 def services(req):
     """
@@ -18,5 +18,5 @@ def services(req):
     """
 
     print("received request for", req.path)
-    return check_items.check_system(req) if req.path.startswith("/check_system") \
+    return check_system.check_system(req) if req.path.startswith("/check_system") \
         else ("Service not available", 404)
